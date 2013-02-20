@@ -9,16 +9,23 @@ import contest_dataset
 dataset = """!obj:contest_dataset.ContestDataset {
           which_set: 'train',
           start: 0,
-          stop: 3500
+          stop: 3500,
+          preprocessor : !obj:pylearn2.datasets.preprocessing.GlobalContrastNormalization {}
      }"""
 
 model = """!obj:pylearn2.models.mlp.MLP {
         layers: [ !obj:pylearn2.models.mlp.SoftmaxPool {
                          layer_name: 'h0',
-                         detector_layer_dim: 1200,
+                         detector_layer_dim: 100,
                          pool_size: 1,
-                         sparse_init: 15,
-                     }, !obj:pylearn2.models.mlp.Softmax {
+                         sparse_init: 20,
+                     }, 
+                   !obj:pylearn2.models.mlp.RectifiedLinear {
+                          layer_name: 'h1',
+                          dim: 200,
+                          irange: 5.
+                     },  
+                   !obj:pylearn2.models.mlp.Softmax {
                          layer_name: 'y',
                          n_classes: 7,
                          irange: 0.
@@ -37,7 +44,8 @@ algorithm = """!obj:pylearn2.training_algorithms.sgd.SGD {
                  'valid' : !obj:contest_dataset.ContestDataset {
                                which_set: 'train',
                                start: 3500,
-                               stop: 4178
+                               stop: 4178,
+                               preprocessor : !obj:pylearn2.datasets.preprocessing.GlobalContrastNormalization {}  
                            }
               },
             cost: !obj:pylearn2.costs.cost.SumOfCosts { costs: [ 
@@ -45,7 +53,7 @@ algorithm = """!obj:pylearn2.training_algorithms.sgd.SGD {
                              method: 'cost_from_X', 
                              supervised: 1
                         }, !obj:pylearn2.models.mlp.WeightDecay {
-                           coeffs: [ .00005, .00005 ]
+                           coeffs: [ .05, .05, .05 ]
                         }
                         ]
             },

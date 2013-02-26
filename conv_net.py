@@ -10,7 +10,9 @@ dataset = """!obj:contest_dataset.ContestDataset {
           which_set: 'train',
           start: 0,
           stop: 3500,
-          preprocessor : !obj:pylearn2.datasets.preprocessing.GlobalContrastNormalization { }
+          fit_preprocessor: True,
+          fit_test_preprocessor: True,
+          preprocessor : !obj:pylearn2.datasets.preprocessing.Standardize { }
      }"""
 
 model = """!obj:pylearn2.models.mlp.MLP {
@@ -26,7 +28,8 @@ model = """!obj:pylearn2.models.mlp.MLP {
                      kernel_shape: [5, 5],
                      pool_shape: [4, 4],
                      pool_stride: [2, 2],
-                     max_kernel_norm: 1.9365
+                     max_kernel_norm: 1.9365,
+                     border_mode: 'full'
                  }, !obj:pylearn2.models.mlp.ConvRectifiedLinear {
                      layer_name: 'h3',
                      output_channels: 64,
@@ -34,7 +37,8 @@ model = """!obj:pylearn2.models.mlp.MLP {
                      kernel_shape: [5, 5],
                      pool_shape: [4, 4],
                      pool_stride: [2, 2],
-                     max_kernel_norm: 1.9365
+                     max_kernel_norm: 1.9365,
+                     border_mode: 'full'
                  }, !obj:pylearn2.models.mlp.Softmax {
                      max_col_norm: 1.9365,
                      layer_name: 'y',
@@ -55,7 +59,8 @@ algorithm = """ !obj:pylearn2.training_algorithms.sgd.SGD {
                                which_set: 'train',
                                start: 3500,
                                stop: 4178,
-                               preprocessor : !obj:pylearn2.datasets.preprocessing.GlobalContrastNormalization { }  
+                               preprocessor : !obj:pylearn2.datasets.preprocessing.Standardize { },
+                               fit_preprocessor: True
                            }
             },
         cost: !obj:pylearn2.costs.cost.SumOfCosts { costs: [

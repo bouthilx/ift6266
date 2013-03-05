@@ -1,0 +1,3 @@
+experiment1/conv_net0.yaml == ('learning_rate', 0.00010000000000000009)
+experiment1/conv_net1.yaml == ('learning_rate', 0.0010000000000000002)
+experiment1/conv_net2.yaml == ('learning_rate', 0.009999999999999995)

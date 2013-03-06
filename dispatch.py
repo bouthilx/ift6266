@@ -18,3 +18,5 @@ command += ' "{{'
 command += ', '.join(names)
 command += '}}" '
 output, rc = run_shell_command(command)
+print 'output', output
+print 'rc', rc

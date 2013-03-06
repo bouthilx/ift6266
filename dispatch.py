@@ -12,9 +12,8 @@ expdir = '/data/lisatmp/ift6266h13/berniergtmp/ift6266/experiment1'
 namelist = os.listdir(expdir)
 names = [expdir + '/' + name for name in namelist if name[-5:] == '.yaml']
 print names
-command = 'jobdispatch --torque -- env=THEANO_FLAGS=device=gpu,ﬂoatX=ﬂoat32,force_device=True' + \
-        ' --duree=48:00:00 --whitespace ' + \
-        '--gpu python /data/lisatmp/ift6266h13/berniergtmp/ift6266/train.py '
+command = 'jobdispatch --env=THEANO_FLAGS=device=gpu,ﬂoatX=ﬂoat32,force_device=True' + \
+        ' --whitespace --gpu python /data/lisatmp/ift6266h13/berniergtmp/ift6266/train.py '
 command += ' "{{'
 command += ', '.join(names)
 command += '}}" '
